@@ -25,6 +25,8 @@ services:
     volumes:
       - ./hermes/.hermes:/opt/data:z
     command: gateway run
+    environment:
+      - HERMES_DASHBOARD=1
 
   postgres:
     image: postgres:18-alpine
