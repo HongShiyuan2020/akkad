@@ -2,18 +2,28 @@ version: "3.9"
 
 services:
   nginx:
-      image: nginx:alpine
-      container_name: nginx
-      restart: always
-      ports:
-        - "80:80"
-        - "443:443"
-      volumes:
-        - ./certs/drrr-sy.top:/etc/nginx/certs/drrr-sy.top:ro
-        - ./nginx/conf.d:/etc/nginx/conf.d:Z
-        - ./nginx/html:/usr/share/nginx/html:Z
-        - ./nginx/logs:/var/log/nginx:Z
-        - ./nginx/stream.d:/etc/nginx/stream.d:Z
+    image: nginx:alpine
+    container_name: nginx
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./certs/drrr-sy.top:/etc/nginx/certs/drrr-sy.top:ro
+      - ./nginx/conf.d:/etc/nginx/conf.d:Z
+      - ./nginx/html:/usr/share/nginx/html:Z
+      - ./nginx/logs:/var/log/nginx:Z
+      - ./nginx/stream.d:/etc/nginx/stream.d:Z
+    depends_on:
+      - adminer
+      - hermes
+  
+  hermes:
+    image: nousresearch/hermes-agent
+    container_name: hermes
+    restart: unless-stopped
+    volumes:
+      - ./hermes/.hermes:/opt/data:z
 
   postgres:
     image: postgres:18-alpine
