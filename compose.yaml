@@ -43,8 +43,6 @@ services:
     image: adminer:standalone
     container_name: adminer
     restart: always
-    expose:
-      - "8081"
 
 volumes:
   postgres-data:
