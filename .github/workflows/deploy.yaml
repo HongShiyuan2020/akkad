@@ -44,7 +44,7 @@ jobs:
           
           cp .env          deploy/
           sed -i "s/POSTGRES_USER=.*/POSTGRES_USER=${{ secrets.POSTGRES_USER }}/g" deploy/.env
-          sed -i "s/POSTGRES_USER=.*/POSTGRES_USER=${{ secrets.POSTGRES_PASSWORD }}/g" deploy/.env
+          sed -i "s/POSTGRES_PASSWORD=.*/POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}/g" deploy/.env
  
           cp -r certs      deploy/
           cp -r nginx      deploy/
