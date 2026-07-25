@@ -24,6 +24,7 @@ services:
     restart: unless-stopped
     volumes:
       - ./hermes/.hermes:/opt/data:z
+    command: gateway run
 
   postgres:
     image: postgres:18-alpine
