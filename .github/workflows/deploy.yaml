@@ -71,4 +71,4 @@ jobs:
 
             # Health check
             sleep 5
-            docker compose ps
+            podman compose ps
