@@ -24,8 +24,6 @@ services:
     restart: unless-stopped
     volumes:
       - ./hermes/.hermes:/opt/data:z
-    ports:
-      - "8642:8642"
     command: gateway run
 
   postgres:
