@@ -1,0 +1,50 @@
+version: "3.9"
+
+services:
+  nginx:
+      image: nginx:alpine
+      container_name: nginx
+      restart: always
+      ports:
+        - "80:80"
+        - "443:443"
+      volumes:
+        - ./certs/drrr-sy.top:/etc/nginx/certs/drrr-sy.top:ro
+        - ./nginx/conf.d:/etc/nginx/conf.d:Z
+        - ./nginx/html:/usr/share/nginx/html:Z
+        - ./nginx/logs:/var/log/nginx:Z
+        - ./nginx/stream.d:/etc/nginx/stream.d:Z
+
+  postgres:
+    image: postgres:18-alpine
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data:z
+
+  app:
+    build: ./akkad
+    container_name: akkad-app
+    restart: always
+    expose:
+      - "8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-akkad}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
+    depends_on:
+      postgres:
+        condition: service_started
+
+  adminer:
+    image: adminer:standalone
+    container_name: adminer
+    restart: always
+    expose:
+      - "8081"
+
+volumes:
+  postgres-data:
