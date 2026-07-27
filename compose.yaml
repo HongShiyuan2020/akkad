@@ -36,7 +36,8 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
-      - postgres-data:/var/lib/postgresql:z
+      - ./sql/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql:Z
+      - postgres-data:/var/lib/postgresql:Z
 
   metabase:
     image: metabase/metabase:latest

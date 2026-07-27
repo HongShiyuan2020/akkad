@@ -48,6 +48,9 @@ jobs:
  
           cp -r certs      deploy/
           cp -r nginx      deploy/
+          cp -r sql        deploy/
+          sed -i "s/<METAPASSWORD>/${{ secrets.POSTGRES_PASSWORD }}/g" deploy/.env
+
 
       - name: SCP to Server
         uses: appleboy/scp-action@master
