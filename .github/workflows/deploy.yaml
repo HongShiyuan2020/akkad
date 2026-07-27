@@ -49,7 +49,7 @@ jobs:
           cp -r certs      deploy/
           cp -r nginx      deploy/
           cp -r sql        deploy/
-          sed -i "s/<METAPASSWORD>/${{ secrets.POSTGRES_PASSWORD }}/g" deploy/.env
+          sed -i "s/<METAPASSWORD>/${{ secrets.POSTGRES_PASSWORD }}/g" deploy/sql/init-db.sql
 
 
       - name: SCP to Server
