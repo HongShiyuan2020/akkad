@@ -46,7 +46,7 @@ jobs:
           sed -i "s/POSTGRES_USER=.*/POSTGRES_USER=${{ secrets.POSTGRES_USER }}/g" deploy/.env
           sed -i "s/POSTGRES_PASSWORD=.*/POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}/g" deploy/.env
           sed -i "s/NC_AUTH_JWT_SECRET=.*/NC_AUTH_JWT_SECRET=${{ secrets.NC_AUTH_JWT_SECRET }}/g" deploy/.env
-          sed -i "s/NC_DB_PASSWORD=.*/NC_DB_PASSWORD=${{ secrets.NC_DB_PASSWORD }}/g" deploy/.env
+          sed -i "s/NC_DB_PASSWORD/${{ secrets.NC_DB_PASSWORD }}/g" deploy/.env
 
           cp -r certs      deploy/
           cp -r nginx      deploy/
