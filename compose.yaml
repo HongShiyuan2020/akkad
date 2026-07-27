@@ -41,7 +41,7 @@ services:
 
   nocodb:
     image: nocodb/nocodb:latest
-    container_name: nocodb-app
+    container_name: nocodb
     restart: always
     environment:
       NC_DB: "pg://postgres:5432?u=nocodb&p=${NC_DB_PASSWORD}&d=nocodb"
