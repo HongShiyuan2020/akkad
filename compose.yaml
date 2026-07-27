@@ -38,6 +38,14 @@ services:
     volumes:
       - postgres-data:/var/lib/postgresql:z
 
+  metabase:
+    image: metabase/metabase:latest
+    container_name: metabase
+    environment:
+      MB_DB_TYPE: postgres
+    depends_on:
+      - postgres
+
   # 
   # app:
   #   build: ./akkad
@@ -53,10 +61,10 @@ services:
   #     postgres:
   #       condition: service_started
 
-  adminer:
-    image: adminer:standalone
-    container_name: adminer
-    restart: always
+  # adminer:
+  #   image: adminer:standalone
+  #   container_name: adminer
+  #   restart: always
 
 volumes:
   postgres-data:

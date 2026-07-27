@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AkkadApplication {
 
-
 	public static void main(String[] args) {
 		SpringApplication.run(AkkadApplication.class, args);
 	}
