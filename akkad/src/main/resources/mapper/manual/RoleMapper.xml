@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="self.syhong.akkad.domain.mapper.RoleMapper">
+    <resultMap id="RoleDTOResultMap"
+        type="self.syhong.akkad.dto.RoleDTO"
+        autoMapping="true" >
+        <id property="id" column="id"/>
+        <result
+                property="permissions"
+                column="permissions"
+                typeHandler="self.syhong.akkad.handler.type_handler.PermissionListTypeHandler"/>
+    </resultMap>
+
+    <select id="listRoleWithPermissions"
+            resultMap="RoleDTOResultMap">
+        SELECT
+            r.*,
+            COALESCE(p.permissions, '[]'::jsonb) AS permissions
+        FROM (
+            SELECT *
+            FROM akd_role
+            ORDER BY id DESC
+            LIMIT #{pageSize}
+            OFFSET #{offset}
+        ) r
+        LEFT JOIN (
+            SELECT
+                rp.role_id,
+                JSONB_AGG(
+                    TO_JSONB(p)
+                ) AS permissions
+            FROM akd_role_permission rp
+            JOIN akd_permission p
+                ON p.id = rp.permission_id
+            GROUP BY rp.role_id
+        ) p
+            ON p.role_id = r.id
+        ORDER BY r.id DESC
+    </select>
+</mapper>

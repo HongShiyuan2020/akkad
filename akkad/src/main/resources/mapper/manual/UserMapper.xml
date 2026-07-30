@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="self.syhong.akkad.domain.mapper.UserMapper">
+    <resultMap id="UserDTOResultMap" 
+        type="self.syhong.akkad.dto.UserDTO"
+        autoMapping="true" >
+        <id property="id" column="id"/>
+        <result
+                property="roles"
+                column="roles"
+                typeHandler="self.syhong.akkad.handler.type_handler.RoleListTypeHandler"/>
+    </resultMap>
+
+
+    <select id="listUserWithRoles"
+            resultMap="UserDTOResultMap">
+        SELECT
+            u.*,
+            COALESCE(r.roles, '[]'::jsonb) AS roles
+        FROM (
+            SELECT *
+            FROM akd_user
+            ORDER BY id DESC
+            LIMIT #{pageSize}
+            OFFSET #{offset}
+        ) u
+        LEFT JOIN (
+            SELECT
+                ur.user_id,
+                JSONB_AGG(
+                    TO_JSONB(r)
+                ) AS roles
+            FROM akd_user_role ur
+            JOIN akd_role r
+                ON r.id = ur.role_id
+            GROUP BY ur.user_id
+        ) r
+            ON r.user_id = u.id
+        ORDER BY u.id DESC
+    </select>
+</mapper>
