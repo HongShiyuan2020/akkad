@@ -35,6 +35,17 @@ jobs:
       #     cd akkad-ui
       #     npm ci
       #     npm run build
+      - name: Setup UI ENV
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Build UI
+        run: |
+          cd akkad-ui
+          npm install && npm run build
+          cp -r dist/* ../static
 
       - name: Prepare Deploy Directory
         run: |
@@ -51,7 +62,10 @@ jobs:
           cp -r certs      deploy/
           cp -r nginx      deploy/
           cp -r sql        deploy/
+          cp -r static     deploy/
           sed -i "s/<PASSWORD>/${{ secrets.NC_DB_PASSWORD }}/g" deploy/sql/init-db.sql
+
+      
 
       - name: Clear Environment
         uses: appleboy/ssh-action@master
@@ -65,6 +79,8 @@ jobs:
             podman compose down --remove-orphans || true
 
             rm -rf nginx
+
+      
 
       - name: SCP to Server
         uses: appleboy/scp-action@master

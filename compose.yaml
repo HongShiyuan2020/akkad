@@ -12,6 +12,7 @@ services:
       - ./certs/drrr-sy.top:/etc/nginx/certs/drrr-sy.top:ro
       - ./nginx/conf.d:/etc/nginx/conf.d:Z
       - ./nginx/html:/usr/share/nginx/html:Z
+      - ./static:/usr/share/nginx/static:Z
       - ./nginx/logs:/var/log/nginx:Z
       - ./nginx/stream.d:/etc/nginx/stream.d:Z
     depends_on:
